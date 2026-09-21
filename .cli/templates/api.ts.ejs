@@ -1,0 +1,87 @@
+import {
+<%- petstoreImports.map((name) => `  ${name},`).join("\n") %>
+} from "@/shared/model/petstore";
+<% if (schemaImports.length) { -%>
+import {
+<%- schemaImports.map((name) => `  ${name},`).join("\n") %>
+} from "@/shared/model/schemas";
+<% } -%>
+import { defineTableConfig } from "@/shared/model/schemas/configInterface";
+<% if (schemaImports.length) { -%>
+import type z from "zod";
+<% } -%>
+
+type <%= entityPascalCase %>ListResponse = Awaited<
+  ReturnType<typeof <%= entityName %>ControllerHandle<%= entityPascalCase %>List>
+>;
+type <%= entityPascalCase %>Row = <%= entityPascalCase %>ListResponse["data"]["data"]["<%= entityName %>s"][number];
+type <%= entityPascalCase %>ListParams = Parameters<typeof use<%= entityPascalCase %>ControllerHandle<%= entityPascalCase %>List>[0];
+<% if (hasForm) { -%>
+type <%= entityPascalCase %>FormValues = z.infer<typeof <%= entityPascalCase %>CreateSchemaData<%= entityPascalCase %>>;
+type <%= entityPascalCase %>CreateResponse = Awaited<
+  ReturnType<typeof <%= entityName %>ControllerHandle<%= entityPascalCase %>Create>
+>;
+<% } -%>
+<% if (hasUpdate) { -%>
+type <%= entityPascalCase %>UpdateValues = z.infer<typeof <%= entityPascalCase %>IdUpdateSchemaData<%= entityPascalCase %>>;
+<% } -%>
+
+export const <%= entityName %>Config = defineTableConfig<
+<%- configGenerics.map((generic) => `  ${generic}`).join(",\n") %>
+>({
+  entityName: "<%= entityLabel %>",
+  table: {
+    useHook: (params) => use<%= entityPascalCase %>ControllerHandle<%= entityPascalCase %>List(params),
+    getRows: (res) => res.data.data.<%= entityName %>s,
+    getTotalCount: (res) =>
+      (res.data as { meta?: { count?: number } }).meta?.count,
+    getRowId: (row) => row.<%= entityName %>Id,
+    columns: [
+      { header: "ID", accessorKey: "<%= entityName %>Id" },
+      { header: "Название", accessorKey: "title" },
+      { header: "Создан", accessorKey: "createdAt" },
+      { header: "Обновлен", accessorKey: "updatedAt" },
+    ],
+  },
+<% if (hasForm) { -%>
+  form: {
+    schema: <%= entityPascalCase %>CreateSchemaData<%= entityPascalCase %>,
+    mutationFn: (data) =>
+      <%= entityName %>ControllerHandle<%= entityPascalCase %>Create({ data: { <%= entityName %>: data } }),
+    fields: [
+      {
+        name: "title",
+        label: "Название",
+        type: "text",
+        placeholder: "Введите значение",
+      },
+    ],
+  },
+<% } -%>
+<% if (hasUpdate) { -%>
+  update: {
+    schema: <%= entityPascalCase %>IdUpdateSchemaData<%= entityPascalCase %>,
+    fields: [
+      {
+        name: "title",
+        label: "Название",
+        type: "text",
+        placeholder: "Введите значение",
+      },
+    ],
+    mutationFn: (id, data) =>
+      <%= entityName %>ControllerHandle<%= entityPascalCase %>IdUpdate(id, {
+        data: { <%= entityName %>: data },
+      }),
+    // Поля списка и поля обновления могут называться по-разному — сверьте маппинг.
+    getDefaultValues: (row) => ({ title: row.title }),
+  },
+<% } -%>
+<% if (hasDelete) { -%>
+  delete: {
+    mutationFn: (id) => <%= entityName %>ControllerHandle<%= entityPascalCase %>IdDelete(id),
+    confirmLabel: (row) =>
+      `Запись ${row.<%= entityName %>Id} будет удалена безвозвратно.`,
+  },
+<% } -%>
+});
