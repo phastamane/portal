@@ -28,6 +28,7 @@ export default defineConfig(({ mode }) => {
     "stream",
     "tournament",
     "report",
+    "board",
     /* CLI_PROXY_END */
   ];
 

@@ -13,6 +13,7 @@ import LoginForm from "@/widgets/login-form/login-form";
 import { getToken } from "@/shared/lib/token";
 import { GlobalError } from "@/shared/ui/global-error";
 import { NotFound } from "@/shared/ui/not-found";
+import { BoardPage } from "@/pages/board-page";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -62,6 +63,12 @@ const projectsRoute = createRoute({
   path: "/projects",
   component: ProjectPage,
 });
+
+const boardRoute = createRoute({
+  getParentRoute: () => protectedLayoutRoute,
+  path: "/boards",
+  component: BoardPage,
+});
 // CLI_INJECT_ROUTE
 const routeTree = rootRoute.addChildren([
   loginRoute,
@@ -69,6 +76,7 @@ const routeTree = rootRoute.addChildren([
     indexRoute,
     expansesRoute,
     projectsRoute,
+    boardRoute,
     // CLI_INJECT_TREE
   ]),
 ]);

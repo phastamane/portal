@@ -26,12 +26,7 @@ dist-ssr
 *.sln
 *.sw?
 
-src/entities/*
-src/pages/*
-src/shared/model/petstore.ts
 
-
-src/shared/model/schemas/*
 
 # Делаем исключение для файла .gitkeep, чтобы папка не была пустой для Git
 !src/entities/.gitkeep
