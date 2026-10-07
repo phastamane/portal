@@ -62,8 +62,7 @@ export const expanseConfig = defineTableConfig<
   },
   form: {
     schema: ExpanseCreateSchema,
-    mutationFn: (data) =>
-      expanseControllerHandleExpanseCreate({ title: '' }),
+    mutationFn: (data) => expanseControllerHandleExpanseCreate(data),
     fields: [
       {
         name: "title",
@@ -84,9 +83,7 @@ export const expanseConfig = defineTableConfig<
       },
     ],
     mutationFn: (id, data) =>
-      expanseControllerHandleExpanseUpdate(id, {
-        title:'',
-      }),
+      expanseControllerHandleExpanseUpdate(id, data),
     // Поля списка и поля обновления могут называться по-разному — сверьте маппинг.
     getDefaultValues: (row) => ({ title: row.title }),
   },
