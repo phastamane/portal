@@ -12,7 +12,7 @@ export const ProjectIdInfoReply = zod.object({
       project: zod
         .object({
           projectId: zod.string().describe("Project id"),
-          expanseId: zod.string().describe("Expanse id"),
+          environmentId: zod.string().describe("Environment id"),
           title: zod.string().describe("Project title"),
           url: zod.string().describe("Project url"),
           createdAt: zod.iso

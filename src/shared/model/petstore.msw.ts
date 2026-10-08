@@ -10,6 +10,8 @@ import { HttpResponse, http } from "msw";
 import type { RequestHandlerOptions } from "msw";
 
 import type {
+  EnvironmentIdInfoReply,
+  EnvironmentListReply,
   ExpanseCreateReply,
   ExpanseIdInfoReply,
   ExpanseListReply,
@@ -204,6 +206,133 @@ export const getExpanseControllerHandleExpanseDeleteResponseMock = (
   ...overrideResponse,
 });
 
+export const getEnvironmentControllerHandleEnvironmentIdInfoResponseMock = (
+  overrideResponse: Partial<Extract<EnvironmentIdInfoReply, object>> = {},
+): EnvironmentIdInfoReply => ({
+  data: {
+    ...{
+      environment: {
+        ...{
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          title: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          stage: faker.helpers.arrayElement([
+            "DEV",
+            "TEST",
+            "PREPROD",
+            "PROD",
+          ] as const),
+          createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+          updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+        },
+      },
+    },
+  },
+  ...overrideResponse,
+});
+
+export const getEnvironmentControllerHandleEnvironmentListResponseMock = (
+  overrideResponse: Partial<Extract<EnvironmentListReply, object>> = {},
+): EnvironmentListReply => ({
+  data: {
+    ...{
+      environment: Array.from(
+        { length: faker.number.int({ min: 1, max: 10 }) },
+        (_, i) => i + 1,
+      ).map(() => ({
+        environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+        expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+        title: faker.string.alpha({ length: { min: 10, max: 20 } }),
+        stage: faker.helpers.arrayElement([
+          "DEV",
+          "TEST",
+          "PREPROD",
+          "PROD",
+        ] as const),
+        createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+        updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+      })),
+    },
+  },
+  meta: { ...{ count: faker.number.float({ fractionDigits: 2 }) } },
+  ...overrideResponse,
+});
+
+export const getEnvironmentControllerHandleEnvironmentCreateResponseMock = (
+  overrideResponse: Partial<Extract<EnvironmentIdInfoReply, object>> = {},
+): EnvironmentIdInfoReply => ({
+  data: {
+    ...{
+      environment: {
+        ...{
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          title: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          stage: faker.helpers.arrayElement([
+            "DEV",
+            "TEST",
+            "PREPROD",
+            "PROD",
+          ] as const),
+          createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+          updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+        },
+      },
+    },
+  },
+  ...overrideResponse,
+});
+
+export const getEnvironmentControllerHandleEnvironmentDeleteResponseMock = (
+  overrideResponse: Partial<Extract<EnvironmentIdInfoReply, object>> = {},
+): EnvironmentIdInfoReply => ({
+  data: {
+    ...{
+      environment: {
+        ...{
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          title: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          stage: faker.helpers.arrayElement([
+            "DEV",
+            "TEST",
+            "PREPROD",
+            "PROD",
+          ] as const),
+          createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+          updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+        },
+      },
+    },
+  },
+  ...overrideResponse,
+});
+
+export const getEnvironmentControllerHandleEnvironmentUpdateResponseMock = (
+  overrideResponse: Partial<Extract<EnvironmentIdInfoReply, object>> = {},
+): EnvironmentIdInfoReply => ({
+  data: {
+    ...{
+      environment: {
+        ...{
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          title: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          stage: faker.helpers.arrayElement([
+            "DEV",
+            "TEST",
+            "PREPROD",
+            "PROD",
+          ] as const),
+          createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+          updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+        },
+      },
+    },
+  },
+  ...overrideResponse,
+});
+
 export const getProjectControllerHandleProjectListResponseMock = (
   overrideResponse: Partial<Extract<ProjectListReply, object>> = {},
 ): ProjectListReply => ({
@@ -214,7 +343,7 @@ export const getProjectControllerHandleProjectListResponseMock = (
         (_, i) => i + 1,
       ).map(() => ({
         projectId: faker.string.alpha({ length: { min: 10, max: 20 } }),
-        expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+        environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
         title: faker.string.alpha({ length: { min: 10, max: 20 } }),
         url: faker.string.alpha({ length: { min: 10, max: 20 } }),
         createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
@@ -234,7 +363,7 @@ export const getProjectControllerHandleProjectIdInfoResponseMock = (
       project: {
         ...{
           projectId: faker.string.alpha({ length: { min: 10, max: 20 } }),
-          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
           title: faker.string.alpha({ length: { min: 10, max: 20 } }),
           url: faker.string.alpha({ length: { min: 10, max: 20 } }),
           createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
@@ -254,7 +383,7 @@ export const getProjectControllerHandleProjectCreateResponseMock = (
       project: {
         ...{
           projectId: faker.string.alpha({ length: { min: 10, max: 20 } }),
-          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
           title: faker.string.alpha({ length: { min: 10, max: 20 } }),
           url: faker.string.alpha({ length: { min: 10, max: 20 } }),
           createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
@@ -274,7 +403,7 @@ export const getProjectControllerHandleProjectUpdateResponseMock = (
       project: {
         ...{
           projectId: faker.string.alpha({ length: { min: 10, max: 20 } }),
-          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
           title: faker.string.alpha({ length: { min: 10, max: 20 } }),
           url: faker.string.alpha({ length: { min: 10, max: 20 } }),
           createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
@@ -294,7 +423,7 @@ export const getProjectControllerHandleProjectDeleteResponseMock = (
       project: {
         ...{
           projectId: faker.string.alpha({ length: { min: 10, max: 20 } }),
-          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
           title: faker.string.alpha({ length: { min: 10, max: 20 } }),
           url: faker.string.alpha({ length: { min: 10, max: 20 } }),
           createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
@@ -305,6 +434,48 @@ export const getProjectControllerHandleProjectDeleteResponseMock = (
   },
   ...overrideResponse,
 });
+
+export const getFileControllerHandlerFileCreateMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.patch>[1]>[0],
+      ) => Promise<void> | void),
+  options?: RequestHandlerOptions,
+) => {
+  return http.patch(
+    "*/files/:projectId",
+    async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
+      if (typeof overrideResponse === "function") {
+        await overrideResponse(info);
+      }
+
+      return new HttpResponse(null, { status: 200 });
+    },
+    options,
+  );
+};
+
+export const getFileControllerHandlerFileInfoMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+  options?: RequestHandlerOptions,
+) => {
+  return http.get(
+    "*/files/:images",
+    async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+      if (typeof overrideResponse === "function") {
+        await overrideResponse(info);
+      }
+
+      return new HttpResponse(null, { status: 200 });
+    },
+    options,
+  );
+};
 
 export const getManagerControllerHandleManagerInfoMockHandler = (
   overrideResponse?:
@@ -522,6 +693,126 @@ export const getExpanseControllerHandleExpanseDeleteMockHandler = (
   );
 };
 
+export const getEnvironmentControllerHandleEnvironmentIdInfoMockHandler = (
+  overrideResponse?:
+    | EnvironmentIdInfoReply
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<EnvironmentIdInfoReply> | EnvironmentIdInfoReply),
+  options?: RequestHandlerOptions,
+) => {
+  return http.get(
+    "*/environment/:environmentId/info",
+    async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+      return HttpResponse.json(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getEnvironmentControllerHandleEnvironmentIdInfoResponseMock(),
+        { status: 200 },
+      );
+    },
+    options,
+  );
+};
+
+export const getEnvironmentControllerHandleEnvironmentListMockHandler = (
+  overrideResponse?:
+    | EnvironmentListReply
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<EnvironmentListReply> | EnvironmentListReply),
+  options?: RequestHandlerOptions,
+) => {
+  return http.get(
+    "*/environment/list",
+    async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+      return HttpResponse.json(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getEnvironmentControllerHandleEnvironmentListResponseMock(),
+        { status: 200 },
+      );
+    },
+    options,
+  );
+};
+
+export const getEnvironmentControllerHandleEnvironmentCreateMockHandler = (
+  overrideResponse?:
+    | EnvironmentIdInfoReply
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<EnvironmentIdInfoReply> | EnvironmentIdInfoReply),
+  options?: RequestHandlerOptions,
+) => {
+  return http.post(
+    "*/environment/create",
+    async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+      return HttpResponse.json(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getEnvironmentControllerHandleEnvironmentCreateResponseMock(),
+        { status: 200 },
+      );
+    },
+    options,
+  );
+};
+
+export const getEnvironmentControllerHandleEnvironmentDeleteMockHandler = (
+  overrideResponse?:
+    | EnvironmentIdInfoReply
+    | ((
+        info: Parameters<Parameters<typeof http.delete>[1]>[0],
+      ) => Promise<EnvironmentIdInfoReply> | EnvironmentIdInfoReply),
+  options?: RequestHandlerOptions,
+) => {
+  return http.delete(
+    "*/environment/:environmentId/delete",
+    async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+      return HttpResponse.json(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getEnvironmentControllerHandleEnvironmentDeleteResponseMock(),
+        { status: 200 },
+      );
+    },
+    options,
+  );
+};
+
+export const getEnvironmentControllerHandleEnvironmentUpdateMockHandler = (
+  overrideResponse?:
+    | EnvironmentIdInfoReply
+    | ((
+        info: Parameters<Parameters<typeof http.patch>[1]>[0],
+      ) => Promise<EnvironmentIdInfoReply> | EnvironmentIdInfoReply),
+  options?: RequestHandlerOptions,
+) => {
+  return http.patch(
+    "*/environment/:environmentId/update",
+    async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
+      return HttpResponse.json(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getEnvironmentControllerHandleEnvironmentUpdateResponseMock(),
+        { status: 200 },
+      );
+    },
+    options,
+  );
+};
+
 export const getProjectControllerHandleProjectListMockHandler = (
   overrideResponse?:
     | ProjectListReply
@@ -642,6 +933,8 @@ export const getProjectControllerHandleProjectDeleteMockHandler = (
   );
 };
 export const getPortalDocumentationMock = () => [
+  getFileControllerHandlerFileCreateMockHandler(),
+  getFileControllerHandlerFileInfoMockHandler(),
   getManagerControllerHandleManagerInfoMockHandler(),
   getManagerControllerHandleManagerListMockHandler(),
   getManagerControllerHandleManagerAuthMockHandler(),
@@ -651,6 +944,11 @@ export const getPortalDocumentationMock = () => [
   getExpanseControllerHandleExpanseCreateMockHandler(),
   getExpanseControllerHandleExpanseUpdateMockHandler(),
   getExpanseControllerHandleExpanseDeleteMockHandler(),
+  getEnvironmentControllerHandleEnvironmentIdInfoMockHandler(),
+  getEnvironmentControllerHandleEnvironmentListMockHandler(),
+  getEnvironmentControllerHandleEnvironmentCreateMockHandler(),
+  getEnvironmentControllerHandleEnvironmentDeleteMockHandler(),
+  getEnvironmentControllerHandleEnvironmentUpdateMockHandler(),
   getProjectControllerHandleProjectListMockHandler(),
   getProjectControllerHandleProjectIdInfoMockHandler(),
   getProjectControllerHandleProjectCreateMockHandler(),

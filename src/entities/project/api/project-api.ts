@@ -49,10 +49,14 @@ export const projectConfig = defineTableConfig<
   form: {
     schema: ProjectCreateSchema,
     mutationFn: (data) =>
-      projectControllerHandleProjectCreate({ expanseId: data.expanseId, title: data.title, url: data.url }),
+      projectControllerHandleProjectCreate({
+        environmentId: data.environmentId,
+        title: data.title,
+        url: data.url,
+      }),
     fields: [
       {
-        name: "expanseId",
+        name: "environmentId",
         label: "ID",
         type: "text",
         placeholder: "Введите значение",
@@ -82,9 +86,7 @@ export const projectConfig = defineTableConfig<
       },
     ],
     mutationFn: (id, data) =>
-      projectControllerHandleProjectUpdate(id, {
-        data: { project: data },
-      }),
+      projectControllerHandleProjectUpdate(id, data),
     // Поля списка и поля обновления могут называться по-разному — сверьте маппинг.
     getDefaultValues: (row) => ({ title: row.title }),
   },

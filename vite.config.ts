@@ -22,6 +22,8 @@ export default defineConfig(({ mode }) => {
     /* CLI_PROXY_START */
     "project",
     "expanse",
+    "environment",
+    "files",
     "match",
     "boxer",
     "manager",

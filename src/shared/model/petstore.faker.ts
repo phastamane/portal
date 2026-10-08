@@ -7,6 +7,8 @@
 import { faker } from "@faker-js/faker";
 
 import type {
+  EnvironmentIdInfoReply,
+  EnvironmentListReply,
   ExpanseCreateReply,
   ExpanseIdInfoReply,
   ExpanseListReply,
@@ -201,6 +203,133 @@ export const getExpanseControllerHandleExpanseDeleteResponseMock = (
   ...overrideResponse,
 });
 
+export const getEnvironmentControllerHandleEnvironmentIdInfoResponseMock = (
+  overrideResponse: Partial<Extract<EnvironmentIdInfoReply, object>> = {},
+): EnvironmentIdInfoReply => ({
+  data: {
+    ...{
+      environment: {
+        ...{
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          title: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          stage: faker.helpers.arrayElement([
+            "DEV",
+            "TEST",
+            "PREPROD",
+            "PROD",
+          ] as const),
+          createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+          updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+        },
+      },
+    },
+  },
+  ...overrideResponse,
+});
+
+export const getEnvironmentControllerHandleEnvironmentListResponseMock = (
+  overrideResponse: Partial<Extract<EnvironmentListReply, object>> = {},
+): EnvironmentListReply => ({
+  data: {
+    ...{
+      environment: Array.from(
+        { length: faker.number.int({ min: 1, max: 10 }) },
+        (_, i) => i + 1,
+      ).map(() => ({
+        environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+        expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+        title: faker.string.alpha({ length: { min: 10, max: 20 } }),
+        stage: faker.helpers.arrayElement([
+          "DEV",
+          "TEST",
+          "PREPROD",
+          "PROD",
+        ] as const),
+        createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+        updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+      })),
+    },
+  },
+  meta: { ...{ count: faker.number.float({ fractionDigits: 2 }) } },
+  ...overrideResponse,
+});
+
+export const getEnvironmentControllerHandleEnvironmentCreateResponseMock = (
+  overrideResponse: Partial<Extract<EnvironmentIdInfoReply, object>> = {},
+): EnvironmentIdInfoReply => ({
+  data: {
+    ...{
+      environment: {
+        ...{
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          title: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          stage: faker.helpers.arrayElement([
+            "DEV",
+            "TEST",
+            "PREPROD",
+            "PROD",
+          ] as const),
+          createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+          updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+        },
+      },
+    },
+  },
+  ...overrideResponse,
+});
+
+export const getEnvironmentControllerHandleEnvironmentDeleteResponseMock = (
+  overrideResponse: Partial<Extract<EnvironmentIdInfoReply, object>> = {},
+): EnvironmentIdInfoReply => ({
+  data: {
+    ...{
+      environment: {
+        ...{
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          title: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          stage: faker.helpers.arrayElement([
+            "DEV",
+            "TEST",
+            "PREPROD",
+            "PROD",
+          ] as const),
+          createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+          updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+        },
+      },
+    },
+  },
+  ...overrideResponse,
+});
+
+export const getEnvironmentControllerHandleEnvironmentUpdateResponseMock = (
+  overrideResponse: Partial<Extract<EnvironmentIdInfoReply, object>> = {},
+): EnvironmentIdInfoReply => ({
+  data: {
+    ...{
+      environment: {
+        ...{
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          title: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          stage: faker.helpers.arrayElement([
+            "DEV",
+            "TEST",
+            "PREPROD",
+            "PROD",
+          ] as const),
+          createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+          updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+        },
+      },
+    },
+  },
+  ...overrideResponse,
+});
+
 export const getProjectControllerHandleProjectListResponseMock = (
   overrideResponse: Partial<Extract<ProjectListReply, object>> = {},
 ): ProjectListReply => ({
@@ -211,7 +340,7 @@ export const getProjectControllerHandleProjectListResponseMock = (
         (_, i) => i + 1,
       ).map(() => ({
         projectId: faker.string.alpha({ length: { min: 10, max: 20 } }),
-        expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+        environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
         title: faker.string.alpha({ length: { min: 10, max: 20 } }),
         url: faker.string.alpha({ length: { min: 10, max: 20 } }),
         createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
@@ -231,7 +360,7 @@ export const getProjectControllerHandleProjectIdInfoResponseMock = (
       project: {
         ...{
           projectId: faker.string.alpha({ length: { min: 10, max: 20 } }),
-          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
           title: faker.string.alpha({ length: { min: 10, max: 20 } }),
           url: faker.string.alpha({ length: { min: 10, max: 20 } }),
           createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
@@ -251,7 +380,7 @@ export const getProjectControllerHandleProjectCreateResponseMock = (
       project: {
         ...{
           projectId: faker.string.alpha({ length: { min: 10, max: 20 } }),
-          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
           title: faker.string.alpha({ length: { min: 10, max: 20 } }),
           url: faker.string.alpha({ length: { min: 10, max: 20 } }),
           createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
@@ -271,7 +400,7 @@ export const getProjectControllerHandleProjectUpdateResponseMock = (
       project: {
         ...{
           projectId: faker.string.alpha({ length: { min: 10, max: 20 } }),
-          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
           title: faker.string.alpha({ length: { min: 10, max: 20 } }),
           url: faker.string.alpha({ length: { min: 10, max: 20 } }),
           createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
@@ -291,7 +420,7 @@ export const getProjectControllerHandleProjectDeleteResponseMock = (
       project: {
         ...{
           projectId: faker.string.alpha({ length: { min: 10, max: 20 } }),
-          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          environmentId: faker.string.alpha({ length: { min: 10, max: 20 } }),
           title: faker.string.alpha({ length: { min: 10, max: 20 } }),
           url: faker.string.alpha({ length: { min: 10, max: 20 } }),
           createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",

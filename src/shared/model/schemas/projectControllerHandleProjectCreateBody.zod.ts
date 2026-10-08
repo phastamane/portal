@@ -7,7 +7,7 @@
 import * as zod from "zod";
 
 export const ProjectControllerHandleProjectCreateBody = zod.object({
-  expanseId: zod.string(),
+  environmentId: zod.string(),
   title: zod.string(),
   url: zod.string(),
 });

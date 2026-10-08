@@ -28,10 +28,12 @@ type BoardProject = {
   id: string;
   title: string;
   url: string;
-  expanseId: string;
+  environmentId: string;
 };
 
-const projectInExpanseSchema = ProjectCreateSchema.omit({ expanseId: true });
+const projectInExpanseSchema = ProjectCreateSchema.omit({
+  environmentId: true,
+});
 type ProjectInExpanseValues = {
   title: string;
   url: string;
@@ -54,7 +56,7 @@ export function BoardPage() {
         id: String(projectConfig.table.getRowId(row)),
         title: row.title,
         url: row.url,
-        expanseId: row.expanseId,
+        environmentId: row.environmentId,
       }))
     : [];
 
@@ -69,7 +71,7 @@ export function BoardPage() {
     const projectExpanse = new Map<string, string>();
 
     for (const project of projects) {
-      const expanseId = moves[project.id] ?? project.expanseId;
+      const expanseId = moves[project.id] ?? project.environmentId;
       if (!expanseIds.has(expanseId)) continue;
 
       const bucket = byExpanse.get(expanseId) ?? [];
@@ -169,7 +171,7 @@ function ExpanseTile({
         <span className="text-xs text-muted-foreground">{projects.length}</span>
       </div>
       <div className="grid flex-1 grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] gap-3">
-        <CreateProjectButton expanseId={id} />
+        <CreateProjectButton environmentId={id} />
         {projects.map((project) => (
           <BoardProjectCard
             key={project.id}
@@ -217,12 +219,12 @@ const projectInExpanseFields: FormField<ProjectInExpanseValues>[] = (
     : [],
 );
 
-function CreateProjectButton({ expanseId }: { expanseId: string }) {
+function CreateProjectButton({ environmentId }: { environmentId: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
   const createMutation = useMutation({
     mutationFn: (values: ProjectInExpanseValues) =>
-      projectConfig.form!.mutationFn({ ...values, expanseId }),
+      projectConfig.form!.mutationFn({ ...values, environmentId }),
     onSuccess: () => {
       queryClient.invalidateQueries();
       setIsOpen(false);

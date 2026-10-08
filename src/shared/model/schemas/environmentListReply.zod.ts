@@ -6,25 +6,25 @@
  */
 import * as zod from "zod";
 
-export const ProjectListReply = zod.object({
+export const EnvironmentListReply = zod.object({
   data: zod
     .object({
-      project: zod
+      environment: zod
         .array(
           zod.object({
-            projectId: zod.string().describe("Project id"),
             environmentId: zod.string().describe("Environment id"),
-            title: zod.string().describe("Project title"),
-            url: zod.string().describe("Project url"),
+            expanseId: zod.string().describe("Expanse id"),
+            title: zod.string().describe("Environment title"),
+            stage: zod.enum(["DEV", "TEST", "PREPROD", "PROD"]),
             createdAt: zod.iso
               .datetime({ offset: true })
-              .describe("Project created"),
+              .describe("Environment created"),
             updatedAt: zod.iso
               .datetime({ offset: true })
-              .describe("Project updated"),
+              .describe("Environment updated"),
           }),
         )
-        .describe("Data Project"),
+        .describe("Data Environment"),
     })
     .describe("Reply data"),
   meta: zod
@@ -34,5 +34,7 @@ export const ProjectListReply = zod.object({
     .describe("Reply meta"),
 });
 
-export type ProjectListReply = zod.input<typeof ProjectListReply>;
-export type ProjectListReplyOutput = zod.output<typeof ProjectListReply>;
+export type EnvironmentListReply = zod.input<typeof EnvironmentListReply>;
+export type EnvironmentListReplyOutput = zod.output<
+  typeof EnvironmentListReply
+>;

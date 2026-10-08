@@ -32,6 +32,12 @@ import type {
 } from "@tanstack/react-query";
 
 import type {
+  EnvironmentControllerHandleEnvironmentIdInfoParams,
+  EnvironmentControllerHandleEnvironmentListParams,
+  EnvironmentCreateSchema,
+  EnvironmentIdInfoReply,
+  EnvironmentListReply,
+  EnvironmentUpdateSchema,
   ExpanseControllerHandleExpanseListParams,
   ExpanseCreateReply,
   ExpanseCreateSchema,
@@ -72,6 +78,535 @@ const withQueryKey = <T extends object, K>(
   }
   return result;
 };
+
+export type fileControllerHandlerFileCreateResponse200 = {
+  data: void;
+  status: 200;
+};
+
+export type fileControllerHandlerFileCreateResponseSuccess =
+  fileControllerHandlerFileCreateResponse200 & {
+    headers: Headers;
+  };
+export type fileControllerHandlerFileCreateResponse =
+  fileControllerHandlerFileCreateResponseSuccess;
+
+export const getFileControllerHandlerFileCreateUrl = (projectId: string) => {
+  return `/files/${projectId}`;
+};
+
+export const fileControllerHandlerFileCreate = async (
+  projectId: string,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<fileControllerHandlerFileCreateResponse> => {
+  return customFetch<fileControllerHandlerFileCreateResponse>(
+    getFileControllerHandlerFileCreateUrl(projectId),
+    {
+      ...options,
+      method: "PATCH",
+    },
+  );
+};
+
+export const getFileControllerHandlerFileCreateQueryKey = (
+  projectId: string,
+) => {
+  return ["PATCH", `/files/${projectId}`] as const;
+};
+
+export const getFileControllerHandlerFileCreateQueryOptions = <
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>,
+  TError = unknown,
+>(
+  projectId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getFileControllerHandlerFileCreateQueryKey(projectId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>
+  > = ({ signal }) =>
+    fileControllerHandlerFileCreate(projectId, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: projectId !== null && projectId !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type FileControllerHandlerFileCreateQueryResult = NonNullable<
+  Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>
+>;
+export type FileControllerHandlerFileCreateQueryError = unknown;
+
+export function useFileControllerHandlerFileCreate<
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>,
+  TError = unknown,
+>(
+  projectId: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>,
+          TError,
+          Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFileControllerHandlerFileCreate<
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>,
+  TError = unknown,
+>(
+  projectId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>,
+          TError,
+          Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFileControllerHandlerFileCreate<
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>,
+  TError = unknown,
+>(
+  projectId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useFileControllerHandlerFileCreate<
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>,
+  TError = unknown,
+>(
+  projectId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileCreate>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getFileControllerHandlerFileCreateQueryOptions(
+    projectId,
+    options,
+  );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+/**
+ * @summary Invalidates the {@link useFileControllerHandlerFileCreate} query
+ */
+export const invalidateFileControllerHandlerFileCreate = async (
+  queryClient: QueryClient,
+  projectId: string,
+  options?: InvalidateOptions,
+): Promise<QueryClient> => {
+  await queryClient.invalidateQueries(
+    { queryKey: getFileControllerHandlerFileCreateQueryKey(projectId) },
+    options,
+  );
+
+  return queryClient;
+};
+
+export type fileControllerHandlerFileInfoResponse200 = {
+  data: void;
+  status: 200;
+};
+
+export type fileControllerHandlerFileInfoResponseSuccess =
+  fileControllerHandlerFileInfoResponse200 & {
+    headers: Headers;
+  };
+export type fileControllerHandlerFileInfoResponse =
+  fileControllerHandlerFileInfoResponseSuccess;
+
+export const getFileControllerHandlerFileInfoUrl = (images: string) => {
+  return `/files/${images}`;
+};
+
+export const fileControllerHandlerFileInfo = async (
+  images: string,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<fileControllerHandlerFileInfoResponse> => {
+  return customFetch<fileControllerHandlerFileInfoResponse>(
+    getFileControllerHandlerFileInfoUrl(images),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getFileControllerHandlerFileInfoQueryKey = (images: string) => {
+  return [`/files/${images}`] as const;
+};
+
+export const getFileControllerHandlerFileInfoQueryOptions = <
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+  TError = unknown,
+>(
+  images: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getFileControllerHandlerFileInfoQueryKey(images);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>
+  > = ({ signal }) =>
+    fileControllerHandlerFileInfo(images, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: images !== null && images !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type FileControllerHandlerFileInfoQueryResult = NonNullable<
+  Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>
+>;
+export type FileControllerHandlerFileInfoQueryError = unknown;
+
+export function useFileControllerHandlerFileInfo<
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+  TError = unknown,
+>(
+  images: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+          TError,
+          Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFileControllerHandlerFileInfo<
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+  TError = unknown,
+>(
+  images: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+          TError,
+          Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFileControllerHandlerFileInfo<
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+  TError = unknown,
+>(
+  images: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useFileControllerHandlerFileInfo<
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+  TError = unknown,
+>(
+  images: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getFileControllerHandlerFileInfoQueryOptions(
+    images,
+    options,
+  );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+/**
+ * @summary Invalidates the {@link useFileControllerHandlerFileInfo} query
+ */
+export const invalidateFileControllerHandlerFileInfo = async (
+  queryClient: QueryClient,
+  images: string,
+  options?: InvalidateOptions,
+): Promise<QueryClient> => {
+  await queryClient.invalidateQueries(
+    { queryKey: getFileControllerHandlerFileInfoQueryKey(images) },
+    options,
+  );
+
+  return queryClient;
+};
+
+export const getFileControllerHandlerFileInfoSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+  TError = unknown,
+>(
+  images: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getFileControllerHandlerFileInfoQueryKey(images);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>
+  > = ({ signal }) =>
+    fileControllerHandlerFileInfo(images, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type FileControllerHandlerFileInfoSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>
+>;
+export type FileControllerHandlerFileInfoSuspenseQueryError = unknown;
+
+export function useFileControllerHandlerFileInfoSuspense<
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+  TError = unknown,
+>(
+  images: string,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFileControllerHandlerFileInfoSuspense<
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+  TError = unknown,
+>(
+  images: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFileControllerHandlerFileInfoSuspense<
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+  TError = unknown,
+>(
+  images: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useFileControllerHandlerFileInfoSuspense<
+  TData = Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+  TError = unknown,
+>(
+  images: string,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof fileControllerHandlerFileInfo>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getFileControllerHandlerFileInfoSuspenseQueryOptions(
+    images,
+    options,
+  );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
 
 export type managerControllerHandleManagerInfoResponse200 = {
   data: ManagerInfoReply;
@@ -3271,6 +3806,1999 @@ export const invalidateExpanseControllerHandleExpanseDelete = async (
 ): Promise<QueryClient> => {
   await queryClient.invalidateQueries(
     { queryKey: getExpanseControllerHandleExpanseDeleteQueryKey(expanseId) },
+    options,
+  );
+
+  return queryClient;
+};
+
+export type environmentControllerHandleEnvironmentIdInfoResponse200 = {
+  data: EnvironmentIdInfoReply;
+  status: 200;
+};
+
+export type environmentControllerHandleEnvironmentIdInfoResponseSuccess =
+  environmentControllerHandleEnvironmentIdInfoResponse200 & {
+    headers: Headers;
+  };
+export type environmentControllerHandleEnvironmentIdInfoResponse =
+  environmentControllerHandleEnvironmentIdInfoResponseSuccess;
+
+export const getEnvironmentControllerHandleEnvironmentIdInfoUrl = (
+  environmentId: string,
+  params: EnvironmentControllerHandleEnvironmentIdInfoParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/environment/${environmentId}/info?${stringifiedParams}`
+    : `/environment/${environmentId}/info`;
+};
+
+export const environmentControllerHandleEnvironmentIdInfo = async (
+  environmentId: string,
+  params: EnvironmentControllerHandleEnvironmentIdInfoParams,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<environmentControllerHandleEnvironmentIdInfoResponse> => {
+  return customFetch<environmentControllerHandleEnvironmentIdInfoResponse>(
+    getEnvironmentControllerHandleEnvironmentIdInfoUrl(environmentId, params),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getEnvironmentControllerHandleEnvironmentIdInfoQueryKey = (
+  environmentId: string,
+  params?: EnvironmentControllerHandleEnvironmentIdInfoParams,
+) => {
+  return [
+    `/environment/${environmentId}/info`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getEnvironmentControllerHandleEnvironmentIdInfoQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  params: EnvironmentControllerHandleEnvironmentIdInfoParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getEnvironmentControllerHandleEnvironmentIdInfoQueryKey(
+      environmentId,
+      params,
+    );
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>>
+  > = ({ signal }) =>
+    environmentControllerHandleEnvironmentIdInfo(environmentId, params, {
+      signal,
+      ...requestOptions,
+    });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: environmentId !== null && environmentId !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type EnvironmentControllerHandleEnvironmentIdInfoQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>>
+  >;
+export type EnvironmentControllerHandleEnvironmentIdInfoQueryError = unknown;
+
+export function useEnvironmentControllerHandleEnvironmentIdInfo<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  params: EnvironmentControllerHandleEnvironmentIdInfoParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentIdInfo<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  params: EnvironmentControllerHandleEnvironmentIdInfoParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentIdInfo<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  params: EnvironmentControllerHandleEnvironmentIdInfoParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useEnvironmentControllerHandleEnvironmentIdInfo<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  params: EnvironmentControllerHandleEnvironmentIdInfoParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getEnvironmentControllerHandleEnvironmentIdInfoQueryOptions(
+      environmentId,
+      params,
+      options,
+    );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+/**
+ * @summary Invalidates the {@link useEnvironmentControllerHandleEnvironmentIdInfo} query
+ */
+export const invalidateEnvironmentControllerHandleEnvironmentIdInfo = async (
+  queryClient: QueryClient,
+  environmentId: string,
+  params: EnvironmentControllerHandleEnvironmentIdInfoParams,
+  options?: InvalidateOptions,
+): Promise<QueryClient> => {
+  await queryClient.invalidateQueries(
+    {
+      queryKey: getEnvironmentControllerHandleEnvironmentIdInfoQueryKey(
+        environmentId,
+        params,
+      ),
+    },
+    options,
+  );
+
+  return queryClient;
+};
+
+export const getEnvironmentControllerHandleEnvironmentIdInfoSuspenseQueryOptions =
+  <
+    TData = Awaited<
+      ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+    >,
+    TError = unknown,
+  >(
+    environmentId: string,
+    params: EnvironmentControllerHandleEnvironmentIdInfoParams,
+    options?: {
+      query?: Partial<
+        UseSuspenseQueryOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+          >,
+          TError,
+          TData
+        >
+      >;
+      request?: SecondParameter<typeof customFetch>;
+    },
+  ) => {
+    const { query: queryOptions, request: requestOptions } = options ?? {};
+
+    const queryKey =
+      queryOptions?.queryKey ??
+      getEnvironmentControllerHandleEnvironmentIdInfoQueryKey(
+        environmentId,
+        params,
+      );
+
+    const queryFn: QueryFunction<
+      Awaited<ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>>
+    > = ({ signal }) =>
+      environmentControllerHandleEnvironmentIdInfo(environmentId, params, {
+        signal,
+        ...requestOptions,
+      });
+
+    return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>>,
+      TError,
+      TData
+    > & { queryKey: DataTag<QueryKey, TData, TError> };
+  };
+
+export type EnvironmentControllerHandleEnvironmentIdInfoSuspenseQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>>
+  >;
+export type EnvironmentControllerHandleEnvironmentIdInfoSuspenseQueryError =
+  unknown;
+
+export function useEnvironmentControllerHandleEnvironmentIdInfoSuspense<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  params: EnvironmentControllerHandleEnvironmentIdInfoParams,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentIdInfoSuspense<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  params: EnvironmentControllerHandleEnvironmentIdInfoParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentIdInfoSuspense<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  params: EnvironmentControllerHandleEnvironmentIdInfoParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useEnvironmentControllerHandleEnvironmentIdInfoSuspense<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  params: EnvironmentControllerHandleEnvironmentIdInfoParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentIdInfo>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getEnvironmentControllerHandleEnvironmentIdInfoSuspenseQueryOptions(
+      environmentId,
+      params,
+      options,
+    );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+export type environmentControllerHandleEnvironmentListResponse200 = {
+  data: EnvironmentListReply;
+  status: 200;
+};
+
+export type environmentControllerHandleEnvironmentListResponseSuccess =
+  environmentControllerHandleEnvironmentListResponse200 & {
+    headers: Headers;
+  };
+export type environmentControllerHandleEnvironmentListResponse =
+  environmentControllerHandleEnvironmentListResponseSuccess;
+
+export const getEnvironmentControllerHandleEnvironmentListUrl = (
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/environment/list?${stringifiedParams}`
+    : `/environment/list`;
+};
+
+export const environmentControllerHandleEnvironmentList = async (
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<environmentControllerHandleEnvironmentListResponse> => {
+  return customFetch<environmentControllerHandleEnvironmentListResponse>(
+    getEnvironmentControllerHandleEnvironmentListUrl(params),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getEnvironmentControllerHandleEnvironmentListInfiniteQueryKey = (
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+) => {
+  return [
+    "infinite",
+    `/environment/list`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getEnvironmentControllerHandleEnvironmentListQueryKey = (
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+) => {
+  return [`/environment/list`, ...(params ? [params] : [])] as const;
+};
+
+export const getEnvironmentControllerHandleEnvironmentListInfiniteQueryOptions =
+  <
+    TData = InfiniteData<
+      Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+      EnvironmentControllerHandleEnvironmentListParams["skip"]
+    >,
+    TError = unknown,
+  >(
+    params?: EnvironmentControllerHandleEnvironmentListParams,
+    options?: {
+      query?: Partial<
+        UseInfiniteQueryOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentList>
+          >,
+          TError,
+          TData,
+          QueryKey,
+          EnvironmentControllerHandleEnvironmentListParams["skip"]
+        >
+      >;
+      request?: SecondParameter<typeof customFetch>;
+    },
+  ) => {
+    const { query: queryOptions, request: requestOptions } = options ?? {};
+
+    const queryKey =
+      queryOptions?.queryKey ??
+      getEnvironmentControllerHandleEnvironmentListInfiniteQueryKey(params);
+
+    const queryFn: QueryFunction<
+      Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+      QueryKey,
+      EnvironmentControllerHandleEnvironmentListParams["skip"]
+    > = ({ signal, pageParam }) =>
+      environmentControllerHandleEnvironmentList(
+        { ...params, skip: pageParam ?? params?.["skip"] },
+        { signal, ...requestOptions },
+      );
+
+    return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+      TError,
+      TData,
+      QueryKey,
+      EnvironmentControllerHandleEnvironmentListParams["skip"]
+    > & { queryKey: DataTag<QueryKey, TData, TError> };
+  };
+
+export type EnvironmentControllerHandleEnvironmentListInfiniteQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>
+  >;
+export type EnvironmentControllerHandleEnvironmentListInfiniteQueryError =
+  unknown;
+
+export function useEnvironmentControllerHandleEnvironmentListInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+    EnvironmentControllerHandleEnvironmentListParams["skip"]
+  >,
+  TError = unknown,
+>(
+  params: undefined | EnvironmentControllerHandleEnvironmentListParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData,
+        QueryKey,
+        EnvironmentControllerHandleEnvironmentListParams["skip"]
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentList>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentList>
+          >,
+          QueryKey
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentListInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+    EnvironmentControllerHandleEnvironmentListParams["skip"]
+  >,
+  TError = unknown,
+>(
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData,
+        QueryKey,
+        EnvironmentControllerHandleEnvironmentListParams["skip"]
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentList>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentList>
+          >,
+          QueryKey
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentListInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+    EnvironmentControllerHandleEnvironmentListParams["skip"]
+  >,
+  TError = unknown,
+>(
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData,
+        QueryKey,
+        EnvironmentControllerHandleEnvironmentListParams["skip"]
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useEnvironmentControllerHandleEnvironmentListInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+    EnvironmentControllerHandleEnvironmentListParams["skip"]
+  >,
+  TError = unknown,
+>(
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData,
+        QueryKey,
+        EnvironmentControllerHandleEnvironmentListParams["skip"]
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getEnvironmentControllerHandleEnvironmentListInfiniteQueryOptions(
+      params,
+      options,
+    );
+
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+/**
+ * @summary Invalidates the {@link useEnvironmentControllerHandleEnvironmentListInfinite} query
+ */
+export const invalidateEnvironmentControllerHandleEnvironmentListInfinite =
+  async (
+    queryClient: QueryClient,
+    params?: EnvironmentControllerHandleEnvironmentListParams,
+    options?: InvalidateOptions,
+  ): Promise<QueryClient> => {
+    await queryClient.invalidateQueries(
+      {
+        queryKey:
+          getEnvironmentControllerHandleEnvironmentListInfiniteQueryKey(params),
+      },
+      options,
+    );
+
+    return queryClient;
+  };
+
+export const getEnvironmentControllerHandleEnvironmentListQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentList>
+  >,
+  TError = unknown,
+>(
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getEnvironmentControllerHandleEnvironmentListQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>
+  > = ({ signal }) =>
+    environmentControllerHandleEnvironmentList(params, {
+      signal,
+      ...requestOptions,
+    });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type EnvironmentControllerHandleEnvironmentListQueryResult = NonNullable<
+  Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>
+>;
+export type EnvironmentControllerHandleEnvironmentListQueryError = unknown;
+
+export function useEnvironmentControllerHandleEnvironmentList<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentList>
+  >,
+  TError = unknown,
+>(
+  params: undefined | EnvironmentControllerHandleEnvironmentListParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentList>
+          >,
+          TError,
+          Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentList<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentList>
+  >,
+  TError = unknown,
+>(
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentList>
+          >,
+          TError,
+          Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentList<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentList>
+  >,
+  TError = unknown,
+>(
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useEnvironmentControllerHandleEnvironmentList<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentList>
+  >,
+  TError = unknown,
+>(
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getEnvironmentControllerHandleEnvironmentListQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+/**
+ * @summary Invalidates the {@link useEnvironmentControllerHandleEnvironmentList} query
+ */
+export const invalidateEnvironmentControllerHandleEnvironmentList = async (
+  queryClient: QueryClient,
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: InvalidateOptions,
+): Promise<QueryClient> => {
+  await queryClient.invalidateQueries(
+    { queryKey: getEnvironmentControllerHandleEnvironmentListQueryKey(params) },
+    options,
+  );
+
+  return queryClient;
+};
+
+export const getEnvironmentControllerHandleEnvironmentListSuspenseQueryOptions =
+  <
+    TData = Awaited<
+      ReturnType<typeof environmentControllerHandleEnvironmentList>
+    >,
+    TError = unknown,
+  >(
+    params?: EnvironmentControllerHandleEnvironmentListParams,
+    options?: {
+      query?: Partial<
+        UseSuspenseQueryOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentList>
+          >,
+          TError,
+          TData
+        >
+      >;
+      request?: SecondParameter<typeof customFetch>;
+    },
+  ) => {
+    const { query: queryOptions, request: requestOptions } = options ?? {};
+
+    const queryKey =
+      queryOptions?.queryKey ??
+      getEnvironmentControllerHandleEnvironmentListQueryKey(params);
+
+    const queryFn: QueryFunction<
+      Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>
+    > = ({ signal }) =>
+      environmentControllerHandleEnvironmentList(params, {
+        signal,
+        ...requestOptions,
+      });
+
+    return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+      TError,
+      TData
+    > & { queryKey: DataTag<QueryKey, TData, TError> };
+  };
+
+export type EnvironmentControllerHandleEnvironmentListSuspenseQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>
+  >;
+export type EnvironmentControllerHandleEnvironmentListSuspenseQueryError =
+  unknown;
+
+export function useEnvironmentControllerHandleEnvironmentListSuspense<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentList>
+  >,
+  TError = unknown,
+>(
+  params: undefined | EnvironmentControllerHandleEnvironmentListParams,
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentListSuspense<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentList>
+  >,
+  TError = unknown,
+>(
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentListSuspense<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentList>
+  >,
+  TError = unknown,
+>(
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useEnvironmentControllerHandleEnvironmentListSuspense<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentList>
+  >,
+  TError = unknown,
+>(
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getEnvironmentControllerHandleEnvironmentListSuspenseQueryOptions(
+      params,
+      options,
+    );
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+export const getEnvironmentControllerHandleEnvironmentListSuspenseInfiniteQueryOptions =
+  <
+    TData = InfiniteData<
+      Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+      EnvironmentControllerHandleEnvironmentListParams["skip"]
+    >,
+    TError = unknown,
+  >(
+    params?: EnvironmentControllerHandleEnvironmentListParams,
+    options?: {
+      query?: Partial<
+        UseSuspenseInfiniteQueryOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentList>
+          >,
+          TError,
+          TData,
+          QueryKey,
+          EnvironmentControllerHandleEnvironmentListParams["skip"]
+        >
+      >;
+      request?: SecondParameter<typeof customFetch>;
+    },
+  ) => {
+    const { query: queryOptions, request: requestOptions } = options ?? {};
+
+    const queryKey =
+      queryOptions?.queryKey ??
+      getEnvironmentControllerHandleEnvironmentListInfiniteQueryKey(params);
+
+    const queryFn: QueryFunction<
+      Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+      QueryKey,
+      EnvironmentControllerHandleEnvironmentListParams["skip"]
+    > = ({ signal, pageParam }) =>
+      environmentControllerHandleEnvironmentList(
+        { ...params, skip: pageParam ?? params?.["skip"] },
+        { signal, ...requestOptions },
+      );
+
+    return {
+      queryKey,
+      queryFn,
+      ...queryOptions,
+    } as UseSuspenseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+      TError,
+      TData,
+      QueryKey,
+      EnvironmentControllerHandleEnvironmentListParams["skip"]
+    > & { queryKey: DataTag<QueryKey, TData, TError> };
+  };
+
+export type EnvironmentControllerHandleEnvironmentListSuspenseInfiniteQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>
+  >;
+export type EnvironmentControllerHandleEnvironmentListSuspenseInfiniteQueryError =
+  unknown;
+
+export function useEnvironmentControllerHandleEnvironmentListSuspenseInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+    EnvironmentControllerHandleEnvironmentListParams["skip"]
+  >,
+  TError = unknown,
+>(
+  params: undefined | EnvironmentControllerHandleEnvironmentListParams,
+  options: {
+    query: Partial<
+      UseSuspenseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData,
+        QueryKey,
+        EnvironmentControllerHandleEnvironmentListParams["skip"]
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentListSuspenseInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+    EnvironmentControllerHandleEnvironmentListParams["skip"]
+  >,
+  TError = unknown,
+>(
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData,
+        QueryKey,
+        EnvironmentControllerHandleEnvironmentListParams["skip"]
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentListSuspenseInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+    EnvironmentControllerHandleEnvironmentListParams["skip"]
+  >,
+  TError = unknown,
+>(
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData,
+        QueryKey,
+        EnvironmentControllerHandleEnvironmentListParams["skip"]
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useEnvironmentControllerHandleEnvironmentListSuspenseInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+    EnvironmentControllerHandleEnvironmentListParams["skip"]
+  >,
+  TError = unknown,
+>(
+  params?: EnvironmentControllerHandleEnvironmentListParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof environmentControllerHandleEnvironmentList>>,
+        TError,
+        TData,
+        QueryKey,
+        EnvironmentControllerHandleEnvironmentListParams["skip"]
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getEnvironmentControllerHandleEnvironmentListSuspenseInfiniteQueryOptions(
+      params,
+      options,
+    );
+
+  const query = useSuspenseInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+export type environmentControllerHandleEnvironmentCreateResponse200 = {
+  data: EnvironmentIdInfoReply;
+  status: 200;
+};
+
+export type environmentControllerHandleEnvironmentCreateResponseSuccess =
+  environmentControllerHandleEnvironmentCreateResponse200 & {
+    headers: Headers;
+  };
+export type environmentControllerHandleEnvironmentCreateResponse =
+  environmentControllerHandleEnvironmentCreateResponseSuccess;
+
+export const getEnvironmentControllerHandleEnvironmentCreateUrl = () => {
+  return `/environment/create`;
+};
+
+export const environmentControllerHandleEnvironmentCreate = async (
+  environmentCreateSchema: EnvironmentCreateSchema,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<environmentControllerHandleEnvironmentCreateResponse> => {
+  const getHeaders = (
+    h?: NonNullable<RequestInit["headers"]>,
+  ): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(
+          h as Iterable<Iterable<string>>,
+          (entry) => Array.from(entry) as [string, string],
+        ),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<
+      string | readonly string[] | undefined
+    >(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+  return customFetch<environmentControllerHandleEnvironmentCreateResponse>(
+    getEnvironmentControllerHandleEnvironmentCreateUrl(),
+    {
+      ...options,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...getHeaders(options?.headers),
+      },
+      body: JSON.stringify(environmentCreateSchema),
+    },
+  );
+};
+
+export const getEnvironmentControllerHandleEnvironmentCreateQueryKey = (
+  environmentCreateSchema?: EnvironmentCreateSchema,
+) => {
+  return ["POST", `/environment/create`, environmentCreateSchema] as const;
+};
+
+export const getEnvironmentControllerHandleEnvironmentCreateQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+  >,
+  TError = unknown,
+>(
+  environmentCreateSchema: EnvironmentCreateSchema,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getEnvironmentControllerHandleEnvironmentCreateQueryKey(
+      environmentCreateSchema,
+    );
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentCreate>>
+  > = ({ signal }) =>
+    environmentControllerHandleEnvironmentCreate(environmentCreateSchema, {
+      signal,
+      ...requestOptions,
+    });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentCreate>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type EnvironmentControllerHandleEnvironmentCreateQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentCreate>>
+  >;
+export type EnvironmentControllerHandleEnvironmentCreateQueryError = unknown;
+
+export function useEnvironmentControllerHandleEnvironmentCreate<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+  >,
+  TError = unknown,
+>(
+  environmentCreateSchema: EnvironmentCreateSchema,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentCreate<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+  >,
+  TError = unknown,
+>(
+  environmentCreateSchema: EnvironmentCreateSchema,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentCreate<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+  >,
+  TError = unknown,
+>(
+  environmentCreateSchema: EnvironmentCreateSchema,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useEnvironmentControllerHandleEnvironmentCreate<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+  >,
+  TError = unknown,
+>(
+  environmentCreateSchema: EnvironmentCreateSchema,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentCreate>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getEnvironmentControllerHandleEnvironmentCreateQueryOptions(
+      environmentCreateSchema,
+      options,
+    );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+/**
+ * @summary Invalidates the {@link useEnvironmentControllerHandleEnvironmentCreate} query
+ */
+export const invalidateEnvironmentControllerHandleEnvironmentCreate = async (
+  queryClient: QueryClient,
+  environmentCreateSchema: EnvironmentCreateSchema,
+  options?: InvalidateOptions,
+): Promise<QueryClient> => {
+  await queryClient.invalidateQueries(
+    {
+      queryKey: getEnvironmentControllerHandleEnvironmentCreateQueryKey(
+        environmentCreateSchema,
+      ),
+    },
+    options,
+  );
+
+  return queryClient;
+};
+
+export type environmentControllerHandleEnvironmentDeleteResponse200 = {
+  data: EnvironmentIdInfoReply;
+  status: 200;
+};
+
+export type environmentControllerHandleEnvironmentDeleteResponseSuccess =
+  environmentControllerHandleEnvironmentDeleteResponse200 & {
+    headers: Headers;
+  };
+export type environmentControllerHandleEnvironmentDeleteResponse =
+  environmentControllerHandleEnvironmentDeleteResponseSuccess;
+
+export const getEnvironmentControllerHandleEnvironmentDeleteUrl = (
+  environmentId: string,
+) => {
+  return `/environment/${environmentId}/delete`;
+};
+
+export const environmentControllerHandleEnvironmentDelete = async (
+  environmentId: string,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<environmentControllerHandleEnvironmentDeleteResponse> => {
+  return customFetch<environmentControllerHandleEnvironmentDeleteResponse>(
+    getEnvironmentControllerHandleEnvironmentDeleteUrl(environmentId),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+export const getEnvironmentControllerHandleEnvironmentDeleteQueryKey = (
+  environmentId: string,
+) => {
+  return ["DELETE", `/environment/${environmentId}/delete`] as const;
+};
+
+export const getEnvironmentControllerHandleEnvironmentDeleteQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getEnvironmentControllerHandleEnvironmentDeleteQueryKey(environmentId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentDelete>>
+  > = ({ signal }) =>
+    environmentControllerHandleEnvironmentDelete(environmentId, {
+      signal,
+      ...requestOptions,
+    });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: environmentId !== null && environmentId !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentDelete>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type EnvironmentControllerHandleEnvironmentDeleteQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentDelete>>
+  >;
+export type EnvironmentControllerHandleEnvironmentDeleteQueryError = unknown;
+
+export function useEnvironmentControllerHandleEnvironmentDelete<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentDelete<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentDelete<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useEnvironmentControllerHandleEnvironmentDelete<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentDelete>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getEnvironmentControllerHandleEnvironmentDeleteQueryOptions(
+      environmentId,
+      options,
+    );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+/**
+ * @summary Invalidates the {@link useEnvironmentControllerHandleEnvironmentDelete} query
+ */
+export const invalidateEnvironmentControllerHandleEnvironmentDelete = async (
+  queryClient: QueryClient,
+  environmentId: string,
+  options?: InvalidateOptions,
+): Promise<QueryClient> => {
+  await queryClient.invalidateQueries(
+    {
+      queryKey:
+        getEnvironmentControllerHandleEnvironmentDeleteQueryKey(environmentId),
+    },
+    options,
+  );
+
+  return queryClient;
+};
+
+export type environmentControllerHandleEnvironmentUpdateResponse200 = {
+  data: EnvironmentIdInfoReply;
+  status: 200;
+};
+
+export type environmentControllerHandleEnvironmentUpdateResponseSuccess =
+  environmentControllerHandleEnvironmentUpdateResponse200 & {
+    headers: Headers;
+  };
+export type environmentControllerHandleEnvironmentUpdateResponse =
+  environmentControllerHandleEnvironmentUpdateResponseSuccess;
+
+export const getEnvironmentControllerHandleEnvironmentUpdateUrl = (
+  environmentId: string,
+) => {
+  return `/environment/${environmentId}/update`;
+};
+
+export const environmentControllerHandleEnvironmentUpdate = async (
+  environmentId: string,
+  environmentUpdateSchema: EnvironmentUpdateSchema,
+  options?: Parameters<typeof customFetch>[1],
+): Promise<environmentControllerHandleEnvironmentUpdateResponse> => {
+  const getHeaders = (
+    h?: NonNullable<RequestInit["headers"]>,
+  ): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(
+          h as Iterable<Iterable<string>>,
+          (entry) => Array.from(entry) as [string, string],
+        ),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<
+      string | readonly string[] | undefined
+    >(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+  return customFetch<environmentControllerHandleEnvironmentUpdateResponse>(
+    getEnvironmentControllerHandleEnvironmentUpdateUrl(environmentId),
+    {
+      ...options,
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...getHeaders(options?.headers),
+      },
+      body: JSON.stringify(environmentUpdateSchema),
+    },
+  );
+};
+
+export const getEnvironmentControllerHandleEnvironmentUpdateQueryKey = (
+  environmentId: string,
+  environmentUpdateSchema?: EnvironmentUpdateSchema,
+) => {
+  return [
+    "PATCH",
+    `/environment/${environmentId}/update`,
+    environmentUpdateSchema,
+  ] as const;
+};
+
+export const getEnvironmentControllerHandleEnvironmentUpdateQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  environmentUpdateSchema: EnvironmentUpdateSchema,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getEnvironmentControllerHandleEnvironmentUpdateQueryKey(
+      environmentId,
+      environmentUpdateSchema,
+    );
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentUpdate>>
+  > = ({ signal }) =>
+    environmentControllerHandleEnvironmentUpdate(
+      environmentId,
+      environmentUpdateSchema,
+      { signal, ...requestOptions },
+    );
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: environmentId !== null && environmentId !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentUpdate>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type EnvironmentControllerHandleEnvironmentUpdateQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof environmentControllerHandleEnvironmentUpdate>>
+  >;
+export type EnvironmentControllerHandleEnvironmentUpdateQueryError = unknown;
+
+export function useEnvironmentControllerHandleEnvironmentUpdate<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  environmentUpdateSchema: EnvironmentUpdateSchema,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentUpdate<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  environmentUpdateSchema: EnvironmentUpdateSchema,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useEnvironmentControllerHandleEnvironmentUpdate<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  environmentUpdateSchema: EnvironmentUpdateSchema,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useEnvironmentControllerHandleEnvironmentUpdate<
+  TData = Awaited<
+    ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+  >,
+  TError = unknown,
+>(
+  environmentId: string,
+  environmentUpdateSchema: EnvironmentUpdateSchema,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof environmentControllerHandleEnvironmentUpdate>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getEnvironmentControllerHandleEnvironmentUpdateQueryOptions(
+      environmentId,
+      environmentUpdateSchema,
+      options,
+    );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+/**
+ * @summary Invalidates the {@link useEnvironmentControllerHandleEnvironmentUpdate} query
+ */
+export const invalidateEnvironmentControllerHandleEnvironmentUpdate = async (
+  queryClient: QueryClient,
+  environmentId: string,
+  environmentUpdateSchema: EnvironmentUpdateSchema,
+  options?: InvalidateOptions,
+): Promise<QueryClient> => {
+  await queryClient.invalidateQueries(
+    {
+      queryKey: getEnvironmentControllerHandleEnvironmentUpdateQueryKey(
+        environmentId,
+        environmentUpdateSchema,
+      ),
+    },
     options,
   );
 
