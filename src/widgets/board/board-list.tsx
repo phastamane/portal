@@ -32,13 +32,15 @@ export function BoardList() {
       {expanses.map((expanse) => (
         <section
           key={expanse.expanseId}
-          className="space-y-3 rounded-xl border bg-card p-4"
+          className="space-y-3 flex flex-col rounded-xl border bg-card p-4"
         >
-          <h2 className="inline-flex max-w-full items-center rounded-lg bg-primary/20 px-3 py-1.5 text-lg font-semibold tracking-tight text-primary-foreground">
+          <h2 className="inline-flex max-w-full mx-auto items-center rounded-lg px-3 py-1.5 text-lg font-extrabold tracking-tight text-accent-foreground">
             {expanse.title}
           </h2>
           {expanse.environment.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Сред пока нет</p>
+            <p className="text-sm text-muted-foreground mx-auto">
+              Сред пока нет
+            </p>
           ) : (
             <div className="space-y-3">
               {expanse.environment.map((environment, index) => (

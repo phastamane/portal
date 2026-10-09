@@ -1,4 +1,7 @@
-import { useExpanseControllerHandleExpanseList } from "@/shared/model/petstore";
+import {
+  useEnvironmentControllerHandleEnvironmentList,
+  useExpanseControllerHandleExpanseList,
+} from "@/shared/model/petstore";
 
 export type ExpanseStage = "DEV" | "TEST" | "PREPROD" | "PROD";
 
@@ -13,6 +16,7 @@ export type ExpanseProject = {
 };
 
 export type ExpanseEnvironment = {
+  environmentId: string;
   stage: ExpanseStage;
   projects: ExpanseProject[];
 };
@@ -64,11 +68,16 @@ function mapEnvironment(raw: unknown): ExpanseEnvironment | null {
     return null;
   }
 
+  const projects = asArray(raw.projects)
+    .map(mapProject)
+    .filter((project): project is ExpanseProject => project !== null);
+
   return {
+    environmentId: String(
+      raw.environmentId ?? raw.id ?? projects[0]?.environmentId ?? "",
+    ),
     stage,
-    projects: asArray(raw.projects)
-      .map(mapProject)
-      .filter((project): project is ExpanseProject => project !== null),
+    projects,
   };
 }
 
@@ -102,14 +111,52 @@ function parseExpanseList(body: unknown): { expanses: Expanse[]; count: number }
   return { expanses, count };
 }
 
+function parseEnvironmentIds(body: unknown): Map<string, string> {
+  const ids = new Map<string, string>();
+  if (!isRecord(body)) return ids;
+
+  const data = isRecord(body.data) ? body.data : body;
+  for (const raw of asArray(data.environment)) {
+    if (!isRecord(raw)) continue;
+    const environmentId = String(raw.environmentId ?? raw.id ?? "");
+    const expanseId = String(raw.expanseId ?? "");
+    const stage = raw.stage;
+    if (!environmentId || !expanseId || typeof stage !== "string") continue;
+    ids.set(`${expanseId}:${stage}`, environmentId);
+  }
+
+  return ids;
+}
+
+function withEnvironmentIds(
+  expanses: Expanse[],
+  ids: Map<string, string>,
+): Expanse[] {
+  return expanses.map((expanse) => ({
+    ...expanse,
+    environment: expanse.environment.map((environment) => ({
+      ...environment,
+      environmentId:
+        environment.environmentId ||
+        ids.get(`${expanse.expanseId}:${environment.stage}`) ||
+        "",
+    })),
+  }));
+}
+
 export function useExpanses() {
   const query = useExpanseControllerHandleExpanseList({ skip: 0, take: 50 });
+  const environmentQuery = useEnvironmentControllerHandleEnvironmentList({
+    skip: 0,
+    take: 200,
+  });
   const parsed = parseExpanseList(query.data?.data);
+  const environmentIds = parseEnvironmentIds(environmentQuery.data?.data);
 
   return {
-    expanses: parsed.expanses,
+    expanses: withEnvironmentIds(parsed.expanses, environmentIds),
     count: parsed.count,
-    isLoading: query.isLoading,
+    isLoading: query.isLoading || environmentQuery.isLoading,
     isError: query.isError || (query.data != null && query.data.status !== 200),
   };
 }
