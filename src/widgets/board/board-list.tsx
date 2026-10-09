@@ -1,5 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { useExpanses } from "@/entities/board/api/board-api";
+import { ExpanseDelete } from "@/features/expanse/delete";
+import { ExpanseUpdate } from "@/features/expanse/update";
 import { EnvironmentField } from "./ui/environment-field";
 
 export function BoardList() {
@@ -34,9 +36,15 @@ export function BoardList() {
           key={expanse.expanseId}
           className="space-y-3 flex flex-col rounded-xl border bg-card p-4"
         >
-          <h2 className="inline-flex max-w-full mx-auto items-center rounded-lg px-3 py-1.5 text-lg font-extrabold tracking-tight text-accent-foreground">
-            {expanse.title}
-          </h2>
+          <div className="mx-auto flex max-w-full items-center gap-1">
+            <h2 className="inline-flex min-w-0 items-center truncate rounded-lg px-3 py-1.5 text-2xl font-extrabold tracking-tight text-accent-foreground">
+              {expanse.title}
+            </h2>
+            <div className="flex shrink-0 items-center">
+              <ExpanseUpdate expanse={expanse} />
+              <ExpanseDelete expanse={expanse} />
+            </div>
+          </div>
           {expanse.environment.length === 0 ? (
             <p className="text-sm text-muted-foreground mx-auto">
               Сред пока нет

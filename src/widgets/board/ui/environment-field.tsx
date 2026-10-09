@@ -10,7 +10,7 @@ export function EnvironmentField({
   return (
     <div className="space-y-2 pl-1">
       <div className="flex items-center gap-2 ">
-        <span className=" inline-flex h-6 w-full items-center rounded-md bg-chart-5 px-2 text-xs font-semibold tracking-wide">
+        <span className=" inline-flex h-6 w-full items-center rounded-md bg-chart-5 px-2  font-semibold tracking-wide">
           {environment.stage}
         </span>
       </div>
