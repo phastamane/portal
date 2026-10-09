@@ -9,9 +9,9 @@ import * as zod from "zod";
 export const ExpanseIdInfoReply = zod.object({
   data: zod
     .object({
-      expanse: zod
+      expanses: zod
         .object({
-          expanseId: zod.string().describe("Expanse id"),
+          id: zod.string().describe("Expanse id"),
           title: zod.string().describe("Expanse title"),
           createdAt: zod.iso
             .datetime({ offset: true })
@@ -19,8 +19,29 @@ export const ExpanseIdInfoReply = zod.object({
           updatedAt: zod.iso
             .datetime({ offset: true })
             .describe("Expanse updated"),
+          environment: zod
+            .object({
+              stage: zod.enum(["DEV", "TEST", "PREPROD", "PROD"]),
+              projects: zod
+                .array(
+                  zod.object({
+                    projectId: zod.string().describe("Project id"),
+                    environmentId: zod.string().describe("Environment id"),
+                    title: zod.string().describe("Project title"),
+                    url: zod.string().describe("Project url"),
+                    createdAt: zod.iso
+                      .datetime({ offset: true })
+                      .describe("Project created"),
+                    updatedAt: zod.iso
+                      .datetime({ offset: true })
+                      .describe("Project updated"),
+                  }),
+                )
+                .describe("Environment projects"),
+            })
+            .describe("Expanse environment"),
         })
-        .describe("Data Expanse"),
+        .describe("Data Expanses"),
     })
     .describe("Reply data"),
 });

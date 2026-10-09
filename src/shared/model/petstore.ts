@@ -42,6 +42,7 @@ import type {
   ExpanseCreateReply,
   ExpanseCreateSchema,
   ExpanseIdInfoReply,
+  ExpanseInfoReply,
   ExpanseListReply,
   ExpanseUpdateSchema,
   ManagerAuthReply,
@@ -3354,7 +3355,7 @@ export const invalidateExpanseControllerHandleExpanseCreate = async (
 };
 
 export type expanseControllerHandleExpanseUpdateResponse200 = {
-  data: ExpanseIdInfoReply;
+  data: ExpanseInfoReply;
   status: 200;
 };
 
@@ -3607,7 +3608,7 @@ export const invalidateExpanseControllerHandleExpanseUpdate = async (
 };
 
 export type expanseControllerHandleExpanseDeleteResponse200 = {
-  data: ExpanseIdInfoReply;
+  data: ExpanseInfoReply;
   status: 200;
 };
 

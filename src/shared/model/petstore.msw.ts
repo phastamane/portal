@@ -14,6 +14,7 @@ import type {
   EnvironmentListReply,
   ExpanseCreateReply,
   ExpanseIdInfoReply,
+  ExpanseInfoReply,
   ExpanseListReply,
   ManagerAuthReply,
   ManagerCreateReply,
@@ -119,12 +120,35 @@ export const getExpanseControllerHandleExpanseIdInfoResponseMock = (
 ): ExpanseIdInfoReply => ({
   data: {
     ...{
-      expanse: {
+      expanses: {
         ...{
-          expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          id: faker.string.alpha({ length: { min: 10, max: 20 } }),
           title: faker.string.alpha({ length: { min: 10, max: 20 } }),
           createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
           updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+          environment: {
+            ...{
+              stage: faker.helpers.arrayElement([
+                "DEV",
+                "TEST",
+                "PREPROD",
+                "PROD",
+              ] as const),
+              projects: Array.from(
+                { length: faker.number.int({ min: 1, max: 10 }) },
+                (_, i) => i + 1,
+              ).map(() => ({
+                projectId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+                environmentId: faker.string.alpha({
+                  length: { min: 10, max: 20 },
+                }),
+                title: faker.string.alpha({ length: { min: 10, max: 20 } }),
+                url: faker.string.alpha({ length: { min: 10, max: 20 } }),
+                createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+                updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+              })),
+            },
+          },
         },
       },
     },
@@ -137,15 +161,37 @@ export const getExpanseControllerHandleExpanseListResponseMock = (
 ): ExpanseListReply => ({
   data: {
     ...{
-      expanse: Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
-        (_, i) => i + 1,
-      ).map(() => ({
-        expanseId: faker.string.alpha({ length: { min: 10, max: 20 } }),
-        title: faker.string.alpha({ length: { min: 10, max: 20 } }),
-        createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
-        updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
-      })),
+      expanses: {
+        ...{
+          id: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          title: faker.string.alpha({ length: { min: 10, max: 20 } }),
+          createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+          updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+          environment: {
+            ...{
+              stage: faker.helpers.arrayElement([
+                "DEV",
+                "TEST",
+                "PREPROD",
+                "PROD",
+              ] as const),
+              projects: Array.from(
+                { length: faker.number.int({ min: 1, max: 10 }) },
+                (_, i) => i + 1,
+              ).map(() => ({
+                projectId: faker.string.alpha({ length: { min: 10, max: 20 } }),
+                environmentId: faker.string.alpha({
+                  length: { min: 10, max: 20 },
+                }),
+                title: faker.string.alpha({ length: { min: 10, max: 20 } }),
+                url: faker.string.alpha({ length: { min: 10, max: 20 } }),
+                createdAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+                updatedAt: faker.date.past().toISOString().slice(0, 19) + "Z",
+              })),
+            },
+          },
+        },
+      },
     },
   },
   meta: { ...{ count: faker.number.float({ fractionDigits: 2 }) } },
@@ -171,8 +217,8 @@ export const getExpanseControllerHandleExpanseCreateResponseMock = (
 });
 
 export const getExpanseControllerHandleExpanseUpdateResponseMock = (
-  overrideResponse: Partial<Extract<ExpanseIdInfoReply, object>> = {},
-): ExpanseIdInfoReply => ({
+  overrideResponse: Partial<Extract<ExpanseInfoReply, object>> = {},
+): ExpanseInfoReply => ({
   data: {
     ...{
       expanse: {
@@ -189,8 +235,8 @@ export const getExpanseControllerHandleExpanseUpdateResponseMock = (
 });
 
 export const getExpanseControllerHandleExpanseDeleteResponseMock = (
-  overrideResponse: Partial<Extract<ExpanseIdInfoReply, object>> = {},
-): ExpanseIdInfoReply => ({
+  overrideResponse: Partial<Extract<ExpanseInfoReply, object>> = {},
+): ExpanseInfoReply => ({
   data: {
     ...{
       expanse: {
@@ -647,10 +693,10 @@ export const getExpanseControllerHandleExpanseCreateMockHandler = (
 
 export const getExpanseControllerHandleExpanseUpdateMockHandler = (
   overrideResponse?:
-    | ExpanseIdInfoReply
+    | ExpanseInfoReply
     | ((
         info: Parameters<Parameters<typeof http.patch>[1]>[0],
-      ) => Promise<ExpanseIdInfoReply> | ExpanseIdInfoReply),
+      ) => Promise<ExpanseInfoReply> | ExpanseInfoReply),
   options?: RequestHandlerOptions,
 ) => {
   return http.patch(
@@ -671,10 +717,10 @@ export const getExpanseControllerHandleExpanseUpdateMockHandler = (
 
 export const getExpanseControllerHandleExpanseDeleteMockHandler = (
   overrideResponse?:
-    | ExpanseIdInfoReply
+    | ExpanseInfoReply
     | ((
         info: Parameters<Parameters<typeof http.delete>[1]>[0],
-      ) => Promise<ExpanseIdInfoReply> | ExpanseIdInfoReply),
+      ) => Promise<ExpanseInfoReply> | ExpanseInfoReply),
   options?: RequestHandlerOptions,
 ) => {
   return http.delete(

@@ -9,20 +9,39 @@ import * as zod from "zod";
 export const ExpanseListReply = zod.object({
   data: zod
     .object({
-      expanse: zod
-        .array(
-          zod.object({
-            expanseId: zod.string().describe("Expanse id"),
-            title: zod.string().describe("Expanse title"),
-            createdAt: zod.iso
-              .datetime({ offset: true })
-              .describe("Expanse created"),
-            updatedAt: zod.iso
-              .datetime({ offset: true })
-              .describe("Expanse updated"),
-          }),
-        )
-        .describe("Data Expanse"),
+      expanses: zod
+        .object({
+          id: zod.string().describe("Expanse id"),
+          title: zod.string().describe("Expanse title"),
+          createdAt: zod.iso
+            .datetime({ offset: true })
+            .describe("Expanse created"),
+          updatedAt: zod.iso
+            .datetime({ offset: true })
+            .describe("Expanse updated"),
+          environment: zod
+            .object({
+              stage: zod.enum(["DEV", "TEST", "PREPROD", "PROD"]),
+              projects: zod
+                .array(
+                  zod.object({
+                    projectId: zod.string().describe("Project id"),
+                    environmentId: zod.string().describe("Environment id"),
+                    title: zod.string().describe("Project title"),
+                    url: zod.string().describe("Project url"),
+                    createdAt: zod.iso
+                      .datetime({ offset: true })
+                      .describe("Project created"),
+                    updatedAt: zod.iso
+                      .datetime({ offset: true })
+                      .describe("Project updated"),
+                  }),
+                )
+                .describe("Environment projects"),
+            })
+            .describe("Expanse environment"),
+        })
+        .describe("Data Expanses"),
     })
     .describe("Reply data"),
   meta: zod
